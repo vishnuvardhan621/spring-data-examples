@@ -6,8 +6,8 @@ env:
     - PROFILE=spring-data-next
     - PROFILE=spring-data-next-releasetrain
     - PROFILE=spring-data-next-releasetrain-released
-    - BOOT=2.3.2.BUILD-SNAPSHOT PROFILE=spring-data-next-releasetrain
-    - BOOT=2.3.2.BUILD-SNAPSHOT PROFILE=spring-data-next-releasetrain-released
+    - BOOT=2.4.1-SNAPSHOT PROFILE=spring-data-next-releasetrain
+    - BOOT=2.4.1-SNAPSHOT PROFILE=spring-data-next-releasetrain-released
 
 services:
   - redis-server
