@@ -15,14 +15,13 @@
  */
 package example.springdata.rest.headers;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests to bootstrap the application.
@@ -39,9 +38,9 @@ public class ApplicationIntegrationTests {
 	@Test
 	public void initializesRepositoryWithSampleData() {
 
-		Iterable<Customer> result = repository.findAll();
+		var result = repository.findAll();
 
-		assertThat(result, is(iterableWithSize(1)));
-		assertThat(result.iterator().next().getLastModifiedDate(), is(notNullValue()));
+		assertThat(result).hasSize(1);
+		assertThat(result.iterator().next().getLastModifiedDate()).isNotNull();
 	}
 }

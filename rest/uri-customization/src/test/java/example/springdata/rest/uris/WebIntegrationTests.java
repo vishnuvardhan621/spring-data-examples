@@ -41,7 +41,7 @@ public class WebIntegrationTests {
 
 	@Autowired WebApplicationContext context;
 
-	MockMvc mvc;
+	private MockMvc mvc;
 
 	@Before
 	public void setUp() {

@@ -47,7 +47,7 @@ public class WebIntegrationTests {
 	@Autowired WebApplicationContext context;
 	@Autowired CustomerRepository customers;
 
-	MockMvc mvc;
+	private MockMvc mvc;
 
 	@Before
 	public void setUp() {
@@ -60,10 +60,10 @@ public class WebIntegrationTests {
 	@Test
 	public void executeConditionalGetRequests() throws Exception {
 
-		Customer customer = customers.findAll().iterator().next();
-		URI uri = new UriTemplate("/customers/{id}").expand(customer.getId());
+		var customer = customers.findAll().iterator().next();
+		var uri = new UriTemplate("/customers/{id}").expand(customer.getId());
 
-		MockHttpServletResponse response = mvc.perform(get(uri)).//
+		var response = mvc.perform(get(uri)).//
 				andExpect(header().string(ETAG, is(notNullValue()))).//
 				andExpect(header().string(LAST_MODIFIED, is(notNullValue()))).//
 				andReturn().getResponse();

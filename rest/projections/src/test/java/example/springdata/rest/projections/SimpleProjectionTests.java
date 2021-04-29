@@ -15,9 +15,6 @@
  */
 package example.springdata.rest.projections;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +23,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Test cases showing the programatic use of a {@link ProjectionFactory}.
  *
@@ -33,21 +32,21 @@ import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
  */
 public class SimpleProjectionTests {
 
-	ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
+	private ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
 
 	@Test
 	public void createMapBackedProjection() {
 
-		Customer customer = factory.createProjection(Customer.class);
+		var customer = factory.createProjection(Customer.class);
 		customer.setFirstname("Dave");
 		customer.setLastname("Matthews");
 
 		// Verify accessors work
-		assertThat(customer.getFirstname(), is("Dave"));
-		assertThat(customer.getLastname(), is("Matthews"));
+		assertThat(customer.getFirstname()).isEqualTo("Dave");
+		assertThat(customer.getLastname()).isEqualTo("Matthews");
 
 		// Verify evaluating a SpEL expression
-		assertThat(customer.getFullName(), is("Dave Matthews"));
+		assertThat(customer.getFullName()).isEqualTo("Dave Matthews");
 	}
 
 	@Test
@@ -57,11 +56,11 @@ public class SimpleProjectionTests {
 		backingMap.put("firstname", "Dave");
 		backingMap.put("lastname", "Matthews");
 
-		Customer customer = factory.createProjection(Customer.class, backingMap);
+		var customer = factory.createProjection(Customer.class, backingMap);
 
 		// Verify accessors work
-		assertThat(customer.getFirstname(), is("Dave"));
-		assertThat(customer.getLastname(), is("Matthews"));
+		assertThat(customer.getFirstname()).isEqualTo("Dave");
+		assertThat(customer.getLastname()).isEqualTo("Matthews");
 	}
 
 	interface Customer {

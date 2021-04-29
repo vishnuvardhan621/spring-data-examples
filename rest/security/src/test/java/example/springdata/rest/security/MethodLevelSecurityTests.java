@@ -15,8 +15,6 @@
  */
 package example.springdata.rest.security;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +24,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Collection of test cases used to verify method-level security.
@@ -97,7 +98,7 @@ public class MethodLevelSecurityTests {
 
 		itemRepository.findAll();
 
-		Item item = itemRepository.save(new Item("MacBook Pro"));
+		var item = itemRepository.save(new Item("MacBook Pro"));
 
 		itemRepository.deleteById(item.getId());
 	}

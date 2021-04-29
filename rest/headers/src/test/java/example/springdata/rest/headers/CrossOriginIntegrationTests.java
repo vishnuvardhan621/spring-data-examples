@@ -44,7 +44,7 @@ public class CrossOriginIntegrationTests {
 	@Autowired WebApplicationContext context;
 	@Autowired CustomerRepository customers;
 
-	MockMvc mvc;
+	private MockMvc mvc;
 
 	@Before
 	public void setUp() {
@@ -54,8 +54,8 @@ public class CrossOriginIntegrationTests {
 	@Test
 	public void executePreflightRequest() throws Exception {
 
-		String origin = "http://localhost:1234";
-		URI uri = URI.create("/customers");
+		var origin = "http://localhost:1234";
+		var uri = URI.create("/customers");
 
 		mvc.perform(options(uri).header(ORIGIN, origin).header(ACCESS_CONTROL_REQUEST_METHOD, "POST")) //
 				.andExpect(header().string(ACCESS_CONTROL_ALLOW_ORIGIN, is(origin))) //
@@ -66,8 +66,8 @@ public class CrossOriginIntegrationTests {
 	@Test
 	public void executeCrossOriginRequest() throws Exception {
 
-		String origin = "http://localhost:1234";
-		URI uri = URI.create("/customers");
+		var origin = "http://localhost:1234";
+		var uri = URI.create("/customers");
 
 		mvc.perform(get(uri).header(ORIGIN, origin)) //
 				.andExpect(status().isOk()) //
@@ -77,8 +77,8 @@ public class CrossOriginIntegrationTests {
 	@Test
 	public void rejectCrossOriginRequest() throws Exception {
 
-		String origin = "http://foo.bar";
-		URI uri = URI.create("/customers");
+		var origin = "http://foo.bar";
+		var uri = URI.create("/customers");
 
 		mvc.perform(get(uri).header(ORIGIN, origin)) //
 				.andExpect(status().isForbidden());

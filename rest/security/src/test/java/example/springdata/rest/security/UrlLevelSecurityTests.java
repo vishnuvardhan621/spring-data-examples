@@ -15,8 +15,7 @@
  */
 package example.springdata.rest.security;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
@@ -49,12 +48,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 public class UrlLevelSecurityTests {
 
-	static final String PAYLOAD = "{\"firstName\": \"Saruman\", \"lastName\": \"the White\", " + "\"title\": \"Wizard\"}";
+	private static final String PAYLOAD = "{\"firstName\": \"Saruman\", \"lastName\": \"the White\", "
+			+ "\"title\": \"Wizard\"}";
 
 	@Autowired WebApplicationContext context;
 	@Autowired FilterChainProxy filterChain;
 
-	MockMvc mvc;
+	private MockMvc mvc;
 
 	@Before
 	public void setUp() {
@@ -85,7 +85,7 @@ public class UrlLevelSecurityTests {
 	@Test
 	public void allowsGetRequestsButRejectsPostForUser() throws Exception {
 
-		HttpHeaders headers = new HttpHeaders();
+		var headers = new HttpHeaders();
 		headers.add(HttpHeaders.ACCEPT, MediaTypes.HAL_JSON_VALUE);
 		headers.add(HttpHeaders.AUTHORIZATION,
 				"Basic " + new String(Base64.getEncoder().encodeToString(("greg:turnquist").getBytes())));
@@ -103,7 +103,7 @@ public class UrlLevelSecurityTests {
 	@Test
 	public void allowsPostRequestForAdmin() throws Exception {
 
-		HttpHeaders headers = new HttpHeaders();
+		var headers = new HttpHeaders();
 		headers.set(HttpHeaders.ACCEPT, MediaTypes.HAL_JSON_VALUE);
 		headers.set(HttpHeaders.AUTHORIZATION,
 				"Basic " + new String(Base64.getEncoder().encodeToString(("ollie:gierke").getBytes())));
@@ -115,20 +115,20 @@ public class UrlLevelSecurityTests {
 
 		headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-		String location = mvc.perform(post("/employees").//
+		var location = mvc.perform(post("/employees").//
 				content(PAYLOAD).//
 				headers(headers)).//
 				andExpect(status().isCreated()).//
 				andReturn().getResponse().getHeader(HttpHeaders.LOCATION);
 
-		ObjectMapper mapper = new ObjectMapper();
+		var mapper = new ObjectMapper();
 
-		String content = mvc.perform(get(location)).//
+		var content = mvc.perform(get(location)).//
 				andReturn().getResponse().getContentAsString();
-		Employee employee = mapper.readValue(content, Employee.class);
+		var employee = mapper.readValue(content, Employee.class);
 
-		assertThat(employee.getFirstName(), is("Saruman"));
-		assertThat(employee.getLastName(), is("the White"));
-		assertThat(employee.getTitle(), is("Wizard"));
+		assertThat(employee.getFirstName()).isEqualTo("Saruman");
+		assertThat(employee.getLastName()).isEqualTo("the White");
+		assertThat(employee.getTitle()).isEqualTo("Wizard");
 	}
 }
