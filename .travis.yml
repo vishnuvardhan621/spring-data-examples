@@ -1,13 +1,15 @@
 language: java
 
+os: linux
+
 env:
   matrix:
     - DUMMY=run-as-is
     - PROFILE=spring-data-next
     - PROFILE=spring-data-next-releasetrain
     - PROFILE=spring-data-next-releasetrain-released
-    - BOOT=2.4.1-SNAPSHOT PROFILE=spring-data-next-releasetrain
-    - BOOT=2.4.1-SNAPSHOT PROFILE=spring-data-next-releasetrain-released
+    - BOOT=2.5.1-SNAPSHOT PROFILE=spring-data-next-releasetrain
+    - BOOT=2.5.1-SNAPSHOT PROFILE=spring-data-next-releasetrain-released
 
 services:
   - redis-server
@@ -17,9 +19,12 @@ cache:
   directories:
     - $HOME/.m2
 
+before_install: wget https://github.com/sormuras/bach/raw/master/install-jdk.sh && . ./install-jdk.sh -f 16
+
 install: true
 
 script:
  - git clone https://github.com/spring-projects/spring-data-examples.git
  - cp -f settings.xml $HOME/.m2/settings.xml
+ - java -version
  - ./run.sh
